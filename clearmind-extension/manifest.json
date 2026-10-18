@@ -1,0 +1,63 @@
+{
+  "manifest_version": 3,
+  "name": "ClearMind \u2014 Adult Content Blocker",
+  "version": "0.1.0",
+  "description": "A privacy-first browser blocker with clean-day streaks and local scoring.",
+  "minimum_chrome_version": "120",
+  "incognito": "spanning",
+  "permissions": [
+    "storage",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "*://www.google.com/*",
+    "*://google.com/*",
+    "*://www.bing.com/*",
+    "*://duckduckgo.com/*",
+    "*://search.yahoo.com/*",
+    "*://search.brave.com/*"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "adult_domains",
+        "enabled": true,
+        "path": "rules/adult-domains.json"
+      }
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.google.com/search*",
+        "*://google.com/search*",
+        "*://www.bing.com/search*",
+        "*://duckduckgo.com/*",
+        "*://search.yahoo.com/search*",
+        "*://search.brave.com/search*"
+      ],
+      "js": [
+        "search-guard.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "action": {
+    "default_title": "ClearMind",
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "blocked.html",
+        "blocked.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "tracker.js"
+  }
+}
